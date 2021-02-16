@@ -12,7 +12,7 @@ class Walker(ursina.Entity):
         x: float,
         y: float,
         color: ursina.Color = ursina.color.white,
-        scale: tuple[float] = (0.3, 0.3),
+        scale: tuple[float] = (0.05, 0.05),
     ):
         """Instantiates a Walker object at position (x, y, 0) with color = `color`,
         which defaults to white
@@ -39,7 +39,10 @@ class Walker(ursina.Entity):
         # Walker's color, defaults to white
         self.color = color
 
-    def step(self, step_size: float = 1):
+        self.eternal = True
+        self.always_on_top = True
+
+    def step(self):
         """Updates the Walker's position based on a step size
 
         Args:
@@ -48,17 +51,11 @@ class Walker(ursina.Entity):
         # Time delta to make animations look smooth
         delta = ursina.time.dt
         # The actual step the Walker is going to take each frame
-        offset = step_size * delta
-        choice = randint(1, 4)
+        x_step = randint(-1, 1) * delta
+        y_step = randint(-1, 1) * delta
 
-        if choice == 1:
-            self.x += offset
-        elif choice == 2:
-            self.x -= offset
-        elif choice == 3:
-            self.y += offset
-        else:
-            self.y -= offset
+        self.x += x_step
+        self.y += y_step
 
     def update(self):
         """Updates the Walker's position each frame"""
