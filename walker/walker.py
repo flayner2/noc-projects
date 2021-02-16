@@ -1,5 +1,5 @@
 import pygame
-from random import uniform
+from random import randint
 
 
 class Walker(pygame.Rect):
@@ -41,8 +41,8 @@ class Walker(pygame.Rect):
     def step(self) -> None:
         """Updates the Walker's position"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = uniform(-1, 1)
-        y_step = uniform(-1, 1)
+        x_step = randint(-1, 1)
+        y_step = randint(-1, 1)
 
         self.left += x_step
         self.top += y_step
