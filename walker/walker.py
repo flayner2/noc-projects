@@ -23,15 +23,7 @@ class Walker(pygame.Rect):
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
-        super().__init__()
-
-        # Walker's intial position on the screen
-        self.left = x
-        self.top = y
-
-        # The size of the Walker
-        self.width = w
-        self.height = h
+        super().__init__(x, y, w, h)
 
     def draw(
         self, surface: pygame.Surface, color: pygame.Color = pygame.Color(0, 0, 0)
