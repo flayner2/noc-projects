@@ -1,7 +1,6 @@
 import pygame
 import walker
 import sys
-import time
 from random import randint
 
 
@@ -75,9 +74,6 @@ def main() -> None:
 
         # Make the Walker... walk
         agent.step()
-
-        # Slow the draw loop down
-        # time.sleep(0.005)
 
         # Draw everything to the screen
         pygame.display.flip()
