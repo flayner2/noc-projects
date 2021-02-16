@@ -1,5 +1,5 @@
 import ursina
-from random import randint
+from random import uniform
 
 
 class Walker(ursina.Entity):
@@ -51,8 +51,8 @@ class Walker(ursina.Entity):
         # Time delta to make animations look smooth
         delta = ursina.time.dt
         # The actual step the Walker is going to take each frame
-        x_step = randint(-1, 1) * delta
-        y_step = randint(-1, 1) * delta
+        x_step = uniform(-1, 1) * delta
+        y_step = uniform(-1, 1) * delta
 
         self.x += x_step
         self.y += y_step
