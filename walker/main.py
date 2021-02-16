@@ -48,7 +48,7 @@ def main() -> None:
         agent.step()
 
         # Slow the draw loop down
-        time.sleep(0.1)
+        time.sleep(0.05)
 
         # Draw everything to the screen
         pygame.display.flip()
