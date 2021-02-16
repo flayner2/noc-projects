@@ -7,7 +7,13 @@ class Walker(ursina.Entity):
     two-dimensional square
     """
 
-    def __init__(self, x: float, y: float, color: ursina.Color = ursina.color.white):
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        color: ursina.Color = ursina.color.white,
+        scale: tuple[float] = (0.3, 0.3),
+    ):
         """Instantiates a Walker object at position (x, y, 0) with color = `color`,
         which defaults to white
 
@@ -16,6 +22,7 @@ class Walker(ursina.Entity):
             y (float): position on the y-axis
             color (ursina.Color, optional): the color for the Walker object. Defaults
             to ursina.color.white.
+            scale (tuple[float]): x and y scale of the Walker object
         """
         super().__init__()
 
@@ -26,10 +33,13 @@ class Walker(ursina.Entity):
         self.x = x
         self.y = y
 
+        # The size of the Walker
+        self.scale = scale
+
         # Walker's color, defaults to white
         self.color = color
 
-    def step(self, step_size: float = 0.01):
+    def step(self, step_size: float = 1):
         """Updates the Walker's position based on a step size
 
         Args:
@@ -49,3 +59,7 @@ class Walker(ursina.Entity):
             self.y += offset
         else:
             self.y -= offset
+
+    def update(self):
+        """Updates the Walker's position each frame"""
+        self.step()
