@@ -63,18 +63,23 @@ class BottomRightSkewedWalker(Walker):
         """
         super().__init__(x, y, w, h)
 
-    def step(self) -> None:
-        """Updates the Walker's position, with a bottom-right skew"""
+    def step(self, probability: float = 0.6) -> None:
+        """Updates the Walker's position, with a bottom-right skew
+
+        Args:
+            probability (float, optional): The probability that the walker will go to
+            the bottom-right of the screen. Defaults to 0.6.
+        """
         # The value for each axis of the step the Walker is going to take each frame
         x_step = uniform(0, 1)
         y_step = uniform(0, 1)
 
-        if x_step <= 0.6:
+        if x_step <= probability:
             self.left += 1
         else:
             self.left -= 1
 
-        if y_step <= 0.6:
+        if y_step <= probability:
             self.top += 1
         else:
             self.top -= 1
