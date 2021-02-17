@@ -19,7 +19,7 @@ class Walker(pygame.Rect):
 
         Args:
             x (int): the position of the Walker object in the x axis
-            y (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the y axis
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
@@ -57,7 +57,7 @@ class BottomRightSkewedWalker(Walker):
 
         Args:
             x (int): the position of the Walker object in the x axis
-            y (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the y axis
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
@@ -94,7 +94,7 @@ class MouseFollowerWalker(Walker):
 
         Args:
             x (int): the position of the Walker object in the x axis
-            y (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the y axis
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
@@ -148,7 +148,7 @@ class GaussianWalker(Walker):
 
         Args:
             x (int): the position of the Walker object in the x axis
-            y (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the y axis
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
