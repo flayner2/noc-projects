@@ -1,5 +1,5 @@
 import pygame
-from random import randint, uniform
+from random import uniform, gauss
 
 
 class Walker(pygame.Rect):
@@ -41,19 +41,19 @@ class Walker(pygame.Rect):
     def step(self) -> None:
         """Updates the Walker's position"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = randint(-1, 1)
-        y_step = randint(-1, 1)
+        x_step = uniform(-1, 1)
+        y_step = uniform(-1, 1)
 
-        self.left += x_step
-        self.top += y_step
+        self.left += int(x_step)
+        self.top += int(y_step)
 
 
 class BottomRightSkewedWalker(Walker):
     """A Walker class with a tendency to move down and to the right"""
 
     def __init__(self, x: int, y: int, w: int, h: int) -> None:
-        """Instantiates a BottomRightSkewedWalker object at position `(x, y)` and with width and
-        height = `(w, h)`.
+        """Instantiates a BottomRightSkewedWalker object at position `(x, y)` and with
+        width and height = `(w, h)`.
 
         Args:
             x (int): the position of the Walker object in the x axis
@@ -89,8 +89,8 @@ class MouseFollowerWalker(Walker):
     """A Walker class with a tendency to move towards the cursor position"""
 
     def __init__(self, x: int, y: int, w: int, h: int) -> None:
-        """Instantiates a BottomRightSkewedWalker object at position `(x, y)` and with width and
-        height = `(w, h)`.
+        """Instantiates a MouseFollowerWalker object at position `(x, y)` and with
+        width and height = `(w, h)`.
 
         Args:
             x (int): the position of the Walker object in the x axis
@@ -112,8 +112,8 @@ class MouseFollowerWalker(Walker):
 
         # The value for each axis of the step the Walker is going to take each frame
         # if chance > probability
-        x_step = randint(-1, 1)
-        y_step = randint(-1, 1)
+        x_step = uniform(-1, 1)
+        y_step = uniform(-1, 1)
 
         # If the Walker feels like following the mouse...
         if chance <= probability:
@@ -135,5 +135,31 @@ class MouseFollowerWalker(Walker):
                 self.top -= 1
         # Otherwise, just move randomly
         else:
-            self.left += x_step
-            self.top += y_step
+            self.left += int(x_step)
+            self.top += int(y_step)
+
+
+class GaussianWalker(Walker):
+    """A Walker class that moves with a Gaussian random distribution"""
+
+    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+        """Instantiates a GaussianWalker object at position `(x, y)` and with width and
+        height = `(w, h)`.
+
+        Args:
+            x (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the x axis
+            w (int): the width of the Walker object
+            h (int): the height of the Walker object
+        """
+        super().__init__(x, y, w, h)
+
+    def step(self) -> None:
+        """Updates the Walker's position based on a Gaussian distribution of random
+        values"""
+        # The value for each axis of the step the Walker is going to take each frame
+        x_step = gauss(-1, 1)
+        y_step = gauss(-1, 1)
+
+        self.left += int(x_step)
+        self.top += int(y_step)
