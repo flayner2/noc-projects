@@ -77,6 +77,7 @@ def main() -> None:
         elif agent.top <= 0:
             agent.top = W_HEIGHT
 
+        # Draw the Walker to the screen
         agent.draw(screen, curr_color)
 
         # Make the Walker... walk
