@@ -41,8 +41,8 @@ class Walker(pygame.Rect):
     def step(self) -> None:
         """Updates the Walker's position"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = uniform(-1, 1)
-        y_step = uniform(-1, 1)
+        x_step = int(round(uniform(-1, 1)))
+        y_step = int(round(uniform(-1, 1)))
 
         self.left += int(x_step)
         self.top += int(y_step)
@@ -112,8 +112,8 @@ class MouseFollowerWalker(Walker):
 
         # The value for each axis of the step the Walker is going to take each frame
         # if chance > probability
-        x_step = uniform(-1, 1)
-        y_step = uniform(-1, 1)
+        x_step = int(round(uniform(-1, 1)))
+        y_step = int(round(uniform(-1, 1)))
 
         # If the Walker feels like following the mouse...
         if chance <= probability:
@@ -135,8 +135,8 @@ class MouseFollowerWalker(Walker):
                 self.top -= 1
         # Otherwise, just move randomly
         else:
-            self.left += int(x_step)
-            self.top += int(y_step)
+            self.left += x_step
+            self.top += y_step
 
 
 class GaussianWalker(Walker):
@@ -154,12 +154,12 @@ class GaussianWalker(Walker):
         """
         super().__init__(x, y, w, h)
 
-    def step(self) -> None:
+    def step(self, mu: float = 1, sd: float = 1) -> None:
         """Updates the Walker's position based on a Gaussian distribution of random
         values"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = gauss(-1, 1)
-        y_step = gauss(-1, 1)
+        x_step = int(round(gauss(mu, sd)))
+        y_step = int(round(gauss(mu, sd)))
 
-        self.left += int(x_step)
-        self.top += int(y_step)
+        self.left += x_step
+        self.top += y_step
