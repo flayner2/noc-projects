@@ -43,6 +43,8 @@ def main() -> None:
 
     # Initialize a Walker
     agent = walker.Walker(xpos, ypos, width, height)
+    # Initalize a BottomRightSkewedWalker
+    skewed_agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
 
     # Draw loop
     while True:
@@ -56,24 +58,14 @@ def main() -> None:
                     pygame.quit()
                     sys.exit()
 
-        # Change the color depending on where the Walker is
-        # if agent.left < (W_WIDTH / 2) and agent.top < (W_HEIGHT / 2):
-        #     curr_color = COLORS["RED"]
-        # elif agent.left < (W_WIDTH / 2) and agent.top > (W_HEIGHT / 2):
-        #     curr_color = COLORS["BLUE"]
-        # elif agent.left > (W_WIDTH / 2) and agent.top < (W_HEIGHT / 2):
-        #     curr_color = COLORS["ORANGE"]
-        # else:
-        #     curr_color = COLORS["PURPLE"]
-
         # Change the color depending on the number of steps
         if steps % 1000 == 0:
             curr_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
-        agent.draw(screen, curr_color)
+        skewed_agent.draw(screen, curr_color)
 
         # Make the Walker... walk
-        agent.step()
+        skewed_agent.step()
 
         # Draw everything to the screen
         pygame.display.flip()
