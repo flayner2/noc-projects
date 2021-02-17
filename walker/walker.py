@@ -1,5 +1,5 @@
 import pygame
-from random import randint
+from random import randint, uniform
 
 
 class Walker(pygame.Rect):
@@ -46,3 +46,35 @@ class Walker(pygame.Rect):
 
         self.left += x_step
         self.top += y_step
+
+
+class BottomRightSkewedWalker(Walker):
+    """A Walker class with a tendency to move down and to the right"""
+
+    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+        """Instantiates a BottomRightSkewedWalker object at position `(x, y)` and with width and
+        height = `(w, h)`.
+
+        Args:
+            x (int): the position of the Walker object in the x axis
+            y (int): the position of the Walker object in the x axis
+            w (int): the width of the Walker object
+            h (int): the height of the Walker object
+        """
+        super().__init__(x, y, w, h)
+
+    def step(self) -> None:
+        """Updates the Walker's position, with a bottom-right skew"""
+        # The value for each axis of the step the Walker is going to take each frame
+        x_step = uniform(0, 1)
+        y_step = uniform(0, 1)
+
+        if x_step <= 0.8:
+            self.left += 1
+        else:
+            self.left -= 1
+
+        if y_step <= 0.8:
+            self.top += 1
+        else:
+            self.top -= 1
