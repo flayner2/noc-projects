@@ -42,11 +42,13 @@ def main() -> None:
     steps = 0
 
     # Initialize a Walker
-    # agent = walker.Walker(xpos, ypos, width, height)
+    agent = walker.Walker(xpos, ypos, width, height)
     # Initalize a BottomRightSkewedWalker
-    # skewed_agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
+    # agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
     # Initialize a MouseFollowerWalker
-    stalker_agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
+    # agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
+    # Initialize a GaussianWalker
+    # agent = walker.GaussianWalker(xpos, ypos, width, height)
 
     # Draw loop
     while True:
@@ -64,10 +66,21 @@ def main() -> None:
         if steps % 1000 == 0:
             curr_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
-        stalker_agent.draw(screen, curr_color)
+        # If the Walker tries to get out of the screen, warp it to the other side
+        if agent.left >= W_WIDTH:
+            agent.left = 0
+        elif agent.left <= 0:
+            agent.left = W_WIDTH
+
+        if agent.top >= W_HEIGHT:
+            agent.top = 0
+        elif agent.top <= 0:
+            agent.top = W_HEIGHT
+
+        agent.draw(screen, curr_color)
 
         # Make the Walker... walk
-        stalker_agent.step()
+        agent.step()
 
         # Draw everything to the screen
         pygame.display.flip()
