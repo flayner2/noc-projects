@@ -101,7 +101,8 @@ class MouseFollowerWalker(Walker):
         super().__init__(x, y, w, h)
 
     def step(self, probability: float = 0.5) -> None:
-        """Updates the Walker's position, with a bottom-right skew
+        """Updates the Walker's position, with a tendency of moving towards the cursor
+        position
 
         Args:
             probability (float, optional): The probability that the walker will try to
