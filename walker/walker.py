@@ -141,9 +141,11 @@ class MouseFollowerWalker(Walker):
 
 
 class GaussianWalker(Walker):
-    """A Walker class that moves with a Gaussian random distribution"""
+    """A Walker class that moves with a step size defined by a Gaussian distribution"""
 
-    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+    def __init__(
+        self, x: int, y: int, w: int, h: int, mu: float = 0.0, sd: float = 1.0
+    ) -> None:
         """Instantiates a GaussianWalker object at position `(x, y)` and with width and
         height = `(w, h)`.
 
@@ -154,13 +156,15 @@ class GaussianWalker(Walker):
             h (int): the height of the Walker object
         """
         super().__init__(x, y, w, h)
+        self.mu = mu
+        self.sd = sd
 
-    def step(self, mu: float = 1, sd: float = 1) -> None:
-        """Updates the Walker's position based on a Gaussian distribution of random
-        values"""
+    def step(self) -> None:
+        """Updates the Walker's position based on a step size defined by a
+        Gaussian distribution of random values"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = int(round(gauss(mu, sd)))
-        y_step = int(round(gauss(mu, sd)))
+        x_step = int(round(gauss(self.mu, self.sd)))
+        y_step = int(round(gauss(self.mu, self.sd)))
 
         self.left += x_step
         self.top += y_step
