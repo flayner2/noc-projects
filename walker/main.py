@@ -42,13 +42,13 @@ def main() -> None:
     steps = 0
 
     # Initialize a Walker
-    agent = walker.Walker(xpos, ypos, width, height)
+    # agent = walker.Walker(xpos, ypos, width, height)
     # Initalize a BottomRightSkewedWalker
     # agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
     # Initialize a MouseFollowerWalker
     # agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
     # Initialize a GaussianWalker
-    # agent = walker.GaussianWalker(xpos, ypos, width, height)
+    agent = walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1)
 
     # Draw loop
     while True:
