@@ -69,12 +69,12 @@ class BottomRightSkewedWalker(Walker):
         x_step = uniform(0, 1)
         y_step = uniform(0, 1)
 
-        if x_step <= 0.8:
+        if x_step <= 0.6:
             self.left += 1
         else:
             self.left -= 1
 
-        if y_step <= 0.8:
+        if y_step <= 0.6:
             self.top += 1
         else:
             self.top -= 1
