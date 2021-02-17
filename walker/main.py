@@ -42,9 +42,9 @@ def main() -> None:
     steps = 0
 
     # Initialize a Walker
-    agent = walker.Walker(xpos, ypos, width, height)
+    # agent = walker.Walker(xpos, ypos, width, height)
     # Initalize a BottomRightSkewedWalker
-    skewed_agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
+    # skewed_agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
     # Initialize a MouseFollowerWalker
     stalker_agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
 
