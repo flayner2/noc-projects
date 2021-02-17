@@ -45,6 +45,8 @@ def main() -> None:
     agent = walker.Walker(xpos, ypos, width, height)
     # Initalize a BottomRightSkewedWalker
     skewed_agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
+    # Initialize a MouseFollowerWalker
+    stalker_agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
 
     # Draw loop
     while True:
@@ -62,10 +64,10 @@ def main() -> None:
         if steps % 1000 == 0:
             curr_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
-        skewed_agent.draw(screen, curr_color)
+        stalker_agent.draw(screen, curr_color)
 
         # Make the Walker... walk
-        skewed_agent.step()
+        stalker_agent.step()
 
         # Draw everything to the screen
         pygame.display.flip()
