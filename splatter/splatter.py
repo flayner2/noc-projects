@@ -21,7 +21,12 @@ class Splatter(pygame.Rect):
         """
         super().__init__(x, y, w, h)
 
-    def draw(self, surface: pygame.Surface, sd: float = 0.2) -> None:
+    def draw(
+        self,
+        surface: pygame.Surface,
+        color: pygame.Color = pygame.Color(0, 0, 0),
+        sd: float = 0.2,
+    ) -> None:
         """Draws the Splatter to the screen, with a random color defined by a Gaussian
         distribution. The Splatters are scattered around the center of the screen, with
         their positions also following a Gaussian distribution.
@@ -29,15 +34,14 @@ class Splatter(pygame.Rect):
         Args:
             surface (pygame.Surface): the Surface in which the Splatter is going to be
             drawn.
+            color (pygame.Color, optional): the color for the Splatter object. Defaults
+            to pygame.Color(0, 0, 0), which translates to solid black.
             sd (float): defines the percentage of the fake "mean" of the distribution
-            that is gonna be used to calculate a fake "standard deviation". Defaults to
-            0.2.
+            that is gonna be used to calculate a fake "standard deviation" for the
+            position of the splatters. Defaults to 0.2.
+            color_sd (float): defines the "standard deviation" for the color of the
+            splatters. Defaults to 1.0.
         """
-        # First, pick a random color
-        red = abs(round(gauss(0, 1) * 100 % 255))
-        green = abs(round(gauss(0, 1) * 100 % 255))
-        blue = abs(round(gauss(0, 1) * 100 % 255))
-        color = pygame.Color(red, green, blue)
 
         # Get the center positions of the screen
         half_width = round(surface.get_width() / 2)
