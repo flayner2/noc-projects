@@ -35,20 +35,26 @@ def main() -> None:
     # Walker position in (x, y)
     xpos, ypos = (W_WIDTH / 2, W_HEIGHT / 2)
     # Walker size in (width, height)
-    width, height = (5, 5)
+    width, height = (2, 2)
     # Wakler color
     curr_color = COLORS["BLACK"]
     # Count the number of Walker steps
     steps = 0
+    # Number of Walkers to generate
+    n = 20
 
-    # Initialize a Walker
-    # agent = walker.Walker(xpos, ypos, width, height)
-    # Initalize a BottomRightSkewedWalker
-    # agent = walker.BottomRightSkewedWalker(xpos, ypos, width, height)
-    # Initialize a MouseFollowerWalker
-    # agent = walker.MouseFollowerWalker(xpos, ypos, width, height)
-    # Initialize a GaussianWalker
-    agent = walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1)
+    # Initialize a collection of Walkers
+    # walkers = [walker.Walker(xpos, ypos, width, height) for _ in range(n)]
+    # Initalize a collection of BottomRightSkewedWalkers
+    # walkers = [
+    #     walker.BottomRightSkewedWalker(xpos, ypos, width, height) for _ in range(n)
+    # ]
+    # Initialize a collection of MouseFollowerWalkers
+    # walkers = [walker.MouseFollowerWalker(xpos, ypos, width, height) for _ in range(n)]
+    # Initialize a collection of GaussianWalkers
+    walkers = [
+        walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1) for _ in range(n)
+    ]
 
     # Draw loop
     while True:
@@ -62,26 +68,27 @@ def main() -> None:
                     pygame.quit()
                     sys.exit()
 
-        # Change the color depending on the number of steps
-        if steps % 1000 == 0:
-            curr_color = (randint(0, 255), randint(0, 255), randint(0, 255))
+        for agent in walkers:
+            # Change the color depending on the number of steps
+            if steps % 1000 == 0:
+                curr_color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
-        # If the Walker tries to get out of the screen, warp it to the other side
-        if agent.left >= W_WIDTH:
-            agent.left = 0
-        elif agent.left <= 0:
-            agent.left = W_WIDTH
+            # If the Walker tries to get out of the screen, warp it to the other side
+            if agent.left >= W_WIDTH:
+                agent.left = 0
+            elif agent.left <= 0:
+                agent.left = W_WIDTH
 
-        if agent.top >= W_HEIGHT:
-            agent.top = 0
-        elif agent.top <= 0:
-            agent.top = W_HEIGHT
+            if agent.top >= W_HEIGHT:
+                agent.top = 0
+            elif agent.top <= 0:
+                agent.top = W_HEIGHT
 
-        # Draw the Walker to the screen
-        agent.draw(screen, curr_color)
+            # Draw the Walker to the screen
+            agent.draw(screen, curr_color)
 
-        # Make the Walker... walk
-        agent.step()
+            # Make the Walker... walk
+            agent.step()
 
         # Draw everything to the screen
         pygame.display.flip()
