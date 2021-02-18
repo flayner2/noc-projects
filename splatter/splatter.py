@@ -21,15 +21,17 @@ class Splatter(pygame.Rect):
         """
         super().__init__(x, y, w, h)
 
-    def draw(self, surface: pygame.Surface) -> None:
-        # TODO: make the splatters position be relative to the center
-        # of the screen
+    def draw(self, surface: pygame.Surface, sd: float = 0.2) -> None:
         """Draws the Splatter to the screen, with a random color defined by a Gaussian
-        distribution.
+        distribution. The Splatters are scattered around the center of the screen, with
+        their positions also following a Gaussian distribution.
 
         Args:
             surface (pygame.Surface): the Surface in which the Splatter is going to be
             drawn.
+            sd (float): defines the percentage of the fake "mean" of the distribution
+            that is gonna be used to calculate a fake "standard deviation". Defaults to
+            0.2.
         """
         # First, pick a random color
         red = abs(round(gauss(0, 1) * 100 % 255))
@@ -37,28 +39,16 @@ class Splatter(pygame.Rect):
         blue = abs(round(gauss(0, 1) * 100 % 255))
         color = pygame.Color(red, green, blue)
 
-        # Get the surface's dimensions
-        s_width = surface.get_width()
-        s_height = surface.get_height()
+        # Get the center positions of the screen
+        half_width = round(surface.get_width() / 2)
+        half_height = round(surface.get_height() / 2)
 
-        # Create boundaries so that the splatters stay closer to the center
-        # of the screen
-        x_bound = 0.2 * s_width
-        y_bound = 0.2 * s_height
+        # Calculate the sd as a percentage of the "mean"
+        sd_x = sd * half_width
+        sd_y = sd * half_height
 
         # Then, pick a random position
-        x = round(gauss(0, 1) * 100 % s_width)
-        y = round(gauss(0, 1) * 100 % s_height)
-
-        # And add constraints to the position based on the boundaries
-        if x <= 0:
-            x += x_bound
-        else:
-            x -= x_bound
-
-        if y <= 0:
-            y += y_bound
-        else:
-            y -= y_bound
+        x = round(gauss(half_width, sd_x))
+        y = round(gauss(half_height, sd_y))
 
         pygame.draw.circle(surface, color, (x, y), self.height, self.width)
