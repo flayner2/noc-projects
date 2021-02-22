@@ -52,8 +52,13 @@ def main() -> None:
     # Initialize a collection of MouseFollowerWalkers
     # walkers = [walker.MouseFollowerWalker(xpos, ypos, width, height) for _ in range(n)]
     # Initialize a collection of GaussianWalkers
+    # walkers = [
+    #     walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1) for _ in range(n)
+    # ]
+    # Initialize a collection of MonteCarloWalkers
     walkers = [
-        walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1) for _ in range(n)
+        walker.MonteCarloWalker(xpos, ypos, width, height, min=-100, max=100)
+        for _ in range(n)
     ]
 
     # Draw loop
