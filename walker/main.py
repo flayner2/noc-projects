@@ -56,8 +56,15 @@ def main() -> None:
     #     walker.GaussianWalker(xpos, ypos, width, height, mu=0, sd=1) for _ in range(n)
     # ]
     # Initialize a collection of MonteCarloWalkers
+    # walkers = [
+    #     walker.MonteCarloWalker(xpos, ypos, width, height, min=-100, max=100)
+    #     for _ in range(n)
+    # ]
+    # Initialize a collection of ExponentialMonteCarloWalkers
     walkers = [
-        walker.MonteCarloWalker(xpos, ypos, width, height, min=-100, max=100)
+        walker.ExponentialMonteCarloWalker(
+            xpos, ypos, width, height, min=-1, max=1, exp=2
+        )
         for _ in range(n)
     ]
 
