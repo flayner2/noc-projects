@@ -1,9 +1,5 @@
-import pygame
 import p5
-from random import uniform, gauss
 from funcs import monte_carlo, monte_exp
-from noise import pnoise1
-import numpy as np
 
 
 class Walker:
@@ -53,8 +49,8 @@ class Walker:
     def step(self) -> None:
         """Updates the Walker's position"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = uniform(-1, 1)
-        y_step = uniform(-1, 1)
+        x_step = p5.random_uniform(low=-1, high=1)
+        y_step = p5.random_uniform(low=-1, high=1)
 
         self.x += x_step
         self.y += y_step
@@ -63,7 +59,15 @@ class Walker:
 class BottomRightSkewedWalker(Walker):
     """A Walker class with a tendency to move down and to the right"""
 
-    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
+        probability: float = 0.6,
+    ) -> None:
         """Instantiates a BottomRightSkewedWalker object at position `(x, y)` and with
         width and height = `(w, h)`.
 
@@ -73,34 +77,40 @@ class BottomRightSkewedWalker(Walker):
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
+        self.probability = probability
 
-    def step(self, probability: float = 0.6) -> None:
-        """Updates the Walker's position, with a bottom-right skew
-
-        Args:
-            probability (float, optional): The probability that the walker will go to
-            the bottom-right of the screen. Defaults to 0.6.
-        """
+    def step(self) -> None:
+        """Updates the Walker's position, with a bottom-right skew"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = uniform(0, 1)
-        y_step = uniform(0, 1)
+        x_step = p5.random_uniform(low=0, high=1)
+        y_step = p5.random_uniform(low=0, high=1)
 
-        if x_step <= probability:
-            self.left += 1
-        else:
-            self.left -= 1
+        chance = p5.random_uniform(low=0, high=1)
 
-        if y_step <= probability:
-            self.top += 1
+        if chance <= self.probability:
+            self.x += x_step
         else:
-            self.top -= 1
+            self.x -= x_step
+
+        if chance <= self.probability:
+            self.y += y_step
+        else:
+            self.y -= y_step
 
 
 class MouseFollowerWalker(Walker):
     """A Walker class with a tendency to move towards the cursor position"""
 
-    def __init__(self, x: int, y: int, w: int, h: int) -> None:
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
+        probability: float = 0.5,
+    ) -> None:
         """Instantiates a MouseFollowerWalker object at position `(x, y)` and with
         width and height = `(w, h)`.
 
@@ -110,7 +120,8 @@ class MouseFollowerWalker(Walker):
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
+        self.probability = probability
 
     def step(self, probability: float = 0.5) -> None:
         """Updates the Walker's position, with a tendency of moving towards the cursor
@@ -121,42 +132,46 @@ class MouseFollowerWalker(Walker):
             move towards the cursor. Defaults to 0.5.
         """
         # The chance of the Walker moving towards the cursor
-        chance = uniform(0, 1)
+        chance = p5.random_uniform(low=0, high=1)
 
         # The value for each axis of the step the Walker is going to take each frame
         # if chance > probability
-        x_step = round(uniform(-1, 1))
-        y_step = round(uniform(-1, 1))
+        x_step = p5.random_uniform(low=0, high=1)
+        y_step = p5.random_uniform(low=0, high=1)
 
         # If the Walker feels like following the mouse...
         if chance <= probability:
-            # Get the current position of the cursor
-            mouse_pos = pygame.mouse.get_pos()
-
             # If the cursor is further right, move right
-            if mouse_pos[0] - self.left > 0:
-                self.left += 1
+            if mouse_x - self.x > 0:
+                self.x += x_step
             # Else, move left
             else:
-                self.left -= 1
+                self.x -= x_step
 
             # If the cursor is further down, move down
-            if mouse_pos[1] - self.top > 0:
-                self.top += 1
+            if mouse_y - self.y > 0:
+                self.y += y_step
             # Else, move up
             else:
-                self.top -= 1
+                self.y -= y_step
         # Otherwise, just move randomly
         else:
-            self.left += x_step
-            self.top += y_step
+            self.x += x_step
+            self.y += y_step
 
 
 class GaussianWalker(Walker):
     """A Walker class that moves with a step size defined by a Gaussian distribution"""
 
     def __init__(
-        self, x: int, y: int, w: int, h: int, mu: float = 0.0, sd: float = 1.0
+        self,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
+        mu: float = 0.0,
+        sd: float = 1.0,
     ) -> None:
         """Instantiates a GaussianWalker object at position `(x, y)` and with width and
         height = `(w, h)`.
@@ -167,7 +182,7 @@ class GaussianWalker(Walker):
             w (int): the width of the Walker object
             h (int): the height of the Walker object
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
         self.mu = mu
         self.sd = sd
 
@@ -175,17 +190,26 @@ class GaussianWalker(Walker):
         """Updates the Walker's position based on a step size defined by a
         Gaussian distribution of random values"""
         # The value for each axis of the step the Walker is going to take each frame
-        x_step = round(gauss(self.mu, self.sd))
-        y_step = round(gauss(self.mu, self.sd))
+        x_step = p5.random_gaussian(self.mu, self.sd)
+        y_step = p5.random_gaussian(self.mu, self.sd)
 
-        self.left += x_step
-        self.top += y_step
+        self.x += x_step
+        self.y += y_step
 
 
 class MonteCarloWalker(Walker):
     """A Walker with varying step sizes calculated by the Monte Carlo method"""
 
-    def __init__(self, x: int, y: int, w: int, h: int, min: float, max: float) -> None:
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
+        min: float = -1,
+        max: float = 1,
+    ) -> None:
         """Instantiates a MonteCarloWalker object at position `(x, y)` and with width
         and height = `(w, h)`.
 
@@ -197,18 +221,18 @@ class MonteCarloWalker(Walker):
             max (float): the maximum number generated by the Monte Carlo method
             min (float): the minimum number generated by the Monte Carlo method
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
         self.max = max
         self.min = min
 
     def step(self) -> None:
         """Updates the Walker's position based on a step size defined by a
         Monte Carlo random sampling"""
-        x_step = round(monte_carlo(min=self.min, max=self.max))
-        y_step = round(monte_carlo(min=self.min, max=self.max))
+        x_step = monte_carlo(min=self.min, max=self.max)
+        y_step = monte_carlo(min=self.min, max=self.max)
 
-        self.left += x_step
-        self.top += y_step
+        self.x += x_step
+        self.y += y_step
 
 
 class ExponentialMonteCarloWalker(Walker):
@@ -216,7 +240,15 @@ class ExponentialMonteCarloWalker(Walker):
     the probability of a number being picked as an exponential function"""
 
     def __init__(
-        self, x: int, y: int, w: int, h: int, min: float, max: float, exp: float
+        self,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
+        min: float = -1,
+        max: float = 1,
+        exp: float = 2,
     ) -> None:
         """Instantiates a MonteCarloWalker object at position `(x, y)` and with width
         and height = `(w, h)`.
@@ -230,7 +262,7 @@ class ExponentialMonteCarloWalker(Walker):
             min (float): the minimum number generated by the Monte Carlo method
             exp (float): the exponent that defines the exponential function
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
         self.max = max
         self.min = min
         self.exp = exp
@@ -238,11 +270,11 @@ class ExponentialMonteCarloWalker(Walker):
     def step(self) -> None:
         """Updates the Walker's position based on a step size defined by a
         Monte Carlo random sampling"""
-        x_step = round(monte_exp(min=self.min, max=self.max, exp=self.exp))
-        y_step = round(monte_exp(min=self.min, max=self.max, exp=self.exp))
+        x_step = monte_exp(min=self.min, max=self.max, exp=self.exp)
+        y_step = monte_exp(min=self.min, max=self.max, exp=self.exp)
 
-        self.left += x_step
-        self.top += y_step
+        self.x += x_step
+        self.y += y_step
 
 
 class NoiseWalker(Walker):
@@ -250,12 +282,11 @@ class NoiseWalker(Walker):
 
     def __init__(
         self,
-        x: int,
-        y: int,
-        w: int,
-        h: int,
-        surface_width: int,
-        surface_height: int,
+        x: float,
+        y: float,
+        z: float = 0,
+        stroke: tuple[int] = (0, 0, 0, 255),
+        stroke_weight: int = 1,
         tx: float = 0.0,
         ty: float = 0.0,
         inc: float = 0.001,
@@ -268,25 +299,20 @@ class NoiseWalker(Walker):
             y (int): the position of the Walker object in the y axis
             w (int): the width of the Walker object
             h (int): the height of the Walker object
-            surface_width (int): the width of the surface to draw
-            surface_height (int): the height of the surface to draw
             tx (float): the initial "time" for the x axis
             ty (float): the initial "time" for the y axis
             inc (float): the increment for each iteration
         """
-        super().__init__(x, y, w, h)
+        super().__init__(x, y, z, stroke, stroke_weight)
         self.tx = tx
         self.ty = ty
         self.inc = inc
-        self.s_width = surface_width
-        self.s_heigth = surface_height
 
     def step(self) -> None:
         """Updates the Walker's position based on a step size defined by a
         Monte Carlo random sampling"""
-        self.left = round(np.interp(pnoise1(self.tx), [-1, 1], [0, self.s_width]))
-        self.top = round(np.interp(pnoise1(self.ty), [-1, 1], [0, self.s_heigth]))
-        print(self.left, self.top)
+        self.x = p5.remap(p5.noise(self.tx), (0, 1), (0, width))
+        self.y = p5.remap(p5.noise(self.ty), (0, 1), (0, height))
 
         self.tx += self.inc
         self.ty += self.inc
