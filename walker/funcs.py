@@ -1,5 +1,4 @@
 from random import uniform
-from noise import pnoise2
 
 
 def monte_carlo(min: float = -1, max: float = 1) -> float:
