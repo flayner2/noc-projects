@@ -1,8 +1,5 @@
 import p5
-from p5.core.attribs import no_fill
 import walker
-import sys
-from random import randint
 
 
 # Common colors
@@ -20,7 +17,16 @@ W_WIDTH, W_HEIGHT = (800, 600)
 
 # Objects will have to be defined globally
 x, y = W_WIDTH / 2, W_HEIGHT / 2
-agent = walker.Walker(x, y, stroke=Colors.black)
+
+# agent = walker.Walker(x, y, stroke=Colors.black)
+# agent = walker.BottomRightSkewedWalker(x, y, stroke=Colors.black)
+# agent = walker.MouseFollowerWalker(x, y, stroke=Colors.black)
+# agent = walker.GaussianWalker(x, y, stroke=Colors.black, mu=0, sd=1)
+# agent = walker.MonteCarloWalker(x, y, stroke=Colors.black, min=-1, max=1)
+# agent = walker.ExponentialMonteCarloWalker(
+#     x, y, stroke=Colors.black, min=-1, max=1, exp=2
+# )
+agent = walker.NoiseWalker(x, y, stroke=Colors.black, tx=0, ty=1000, inc=0.001)
 
 
 # Setup function, runs once before the draw loop
