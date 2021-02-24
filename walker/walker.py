@@ -290,6 +290,7 @@ class NoiseWalker(Walker):
         tx: float = 0.0,
         ty: float = 0.0,
         inc: float = 0.001,
+        stepsize: bool = False,
     ) -> None:
         """Instantiates a NoiseWalker object at position `(x, y)` and with width
         and height = `(w, h)`.
@@ -307,12 +308,20 @@ class NoiseWalker(Walker):
         self.tx = tx
         self.ty = ty
         self.inc = inc
+        self.stepsize = stepsize
 
     def step(self) -> None:
         """Updates the Walker's position based on a step size defined by a
         Monte Carlo random sampling"""
-        self.x = p5.remap(p5.noise(self.tx), (0, 1), (0, width))
-        self.y = p5.remap(p5.noise(self.ty), (0, 1), (0, height))
+        if self.stepsize:
+            x_step = p5.remap(p5.noise(self.tx), (0, 1), (-1, 1))
+            y_step = p5.remap(p5.noise(self.ty), (0, 1), (-1, 1))
+
+            self.x += x_step
+            self.y += y_step
+        else:
+            self.x = p5.remap(p5.noise(self.tx), (0, 1), (0, width))
+            self.y = p5.remap(p5.noise(self.ty), (0, 1), (0, height))
 
         self.tx += self.inc
         self.ty += self.inc
