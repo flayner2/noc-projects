@@ -1,13 +1,18 @@
-import pygame
-from random import gauss
+import p5
 
 
-class Splatter(pygame.Rect):
+class Splatter:
     """Basically every figure in pygame is a Rect at the end of the day, but a Splatter
     is just a colored circle.
     """
 
-    def __init__(self, x: int = 0, y: int = 0, w: int = 0, h: int = 1) -> None:
+    def __init__(
+        self,
+        x: float = 0,
+        y: float = 0,
+        radius: float = 1,
+        fill: tuple = (0, 0, 0, 255),
+    ) -> None:
         """Instantiates a Splatter object at position `(x, y)` and with width and
         height = `(w, h)`.
 
@@ -19,14 +24,14 @@ class Splatter(pygame.Rect):
             h (int): the height of the Splatter object. Defines if the circle should
             be filled or the thickness of the outline. Defaults to 0.
         """
-        super().__init__(x, y, w, h)
+        self.x = x
+        self.y = y
+        self.radius = radius
 
-    def draw(
-        self,
-        surface: pygame.Surface,
-        color: pygame.Color = pygame.Color(0, 0, 0),
-        sd: float = 0.2,
-    ) -> None:
+        # Fill colors
+        self.r, self.g, self.b, self.a = fill
+
+    def show(self, sd: float = 1, mean_x: float = 0, mean_y: float = 0) -> None:
         """Draws the Splatter to the screen, with a random color defined by a Gaussian
         distribution. The Splatters are scattered around the center of the screen, with
         their positions also following a Gaussian distribution.
@@ -43,16 +48,10 @@ class Splatter(pygame.Rect):
             splatters. Defaults to 1.0.
         """
 
-        # Get the center positions of the screen
-        half_width = round(surface.get_width() / 2)
-        half_height = round(surface.get_height() / 2)
+        # Pick a random position
+        self.x = p5.random_gaussian(mean_x, sd)
+        self.y = p5.random_gaussian(mean_y, sd)
 
-        # Calculate the sd as a percentage of the "mean"
-        sd_x = sd * half_width
-        sd_y = sd * half_height
-
-        # Then, pick a random position
-        x = round(gauss(half_width, sd_x))
-        y = round(gauss(half_height, sd_y))
-
-        pygame.draw.circle(surface, color, (x, y), self.height, self.width)
+        p5.fill(r=self.r, g=self.g, b=self.b, a=self.a)
+        p5.no_stroke()
+        p5.circle((self.x, self.y), self.radius)
